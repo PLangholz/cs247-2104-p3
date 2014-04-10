@@ -13,7 +13,7 @@
 
   function connect_to_chat_firebase(){
     /* Include your Firebase link here!*/
-    fb_instance = new Firebase("https://gsroth-p3-v1.firebaseio.com");
+    fb_instance = new Firebase("https://incandescent-fire-128.firebaseio.com");
 
     // generate new chatroom id or use existing id
     var url_segments = document.location.href.split("/#");
@@ -49,8 +49,9 @@
     // bind submission box
     $("#submission input").keydown(function( event ) {
       if (event.which == 13) {
-        if(has_emotions($(this).val())){
-          fb_instance_stream.push({m:username+": " +$(this).val(), v:cur_video_blob, c: my_color});
+        var curr_emotion = has_emotions($(this).val());
+        if(curr_emotion){
+          fb_instance_stream.push({m:username+": " +$(this).val(), v:cur_video_blob, c: my_color, emotion:curr_emotion});
         }else{
           fb_instance_stream.push({m:username+": " +$(this).val(), c: my_color});
         }
@@ -63,9 +64,13 @@
     scroll_to_bottom(1300);
   }
 
+  var lol_call_back = function(video_element) {
+
+  }
+
   // creates a message node and appends it to the conversation
   function display_msg(data){
-    $("#conversation").append("<div class='msg' style='color:"+data.c+"'>"+data.m+"</div>");
+    $("#conversation").append("<div class='msg' style='color:"+data.c+"'>"+data.m+ "</div>");
     if(data.v){
       // for video element
       var video = document.createElement("video");
@@ -73,7 +78,8 @@
       video.controls = false; // optional
       video.loop = true;
       video.width = 120;
-
+      var animation_callback = undefined;
+      
       var source = document.createElement("source");
       source.src =  URL.createObjectURL(base64_to_blob(data.v));
       source.type =  "video/webm";
@@ -83,8 +89,13 @@
       // for gif instead, use this code below and change mediaRecorder.mimeType in onMediaSuccess below
       // var video = document.createElement("img");
       // video.src = URL.createObjectURL(base64_to_blob(data.v));
-
-      document.getElementById("conversation").appendChild(video);
+      var wrapper = document.createElement("div");
+      //wrapper.className = wrapper.className + " animate"; 
+      wrapper.setAttribute("id", "video");
+      document.getElementById("conversation").appendChild(wrapper);
+      wrapper.appendChild(video);
+      //document.getElementsByClassName("animate").last.appendChild(video);
+      
     }
   }
 
@@ -168,10 +179,10 @@
     var options = ["lol",":)",":("];
     for(var i=0;i<options.length;i++){
       if(msg.indexOf(options[i])!= -1){
-        return true;
+        return options[i];
       }
     }
-    return false;
+    return undefined;
   }
 
 

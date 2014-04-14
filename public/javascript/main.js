@@ -43,15 +43,25 @@
     if(!username){
       username = "anonymous"+Math.floor(Math.random()*1111);
     }
+    document.username = username;
     fb_instance_users.push({ name: username,c: my_color});
     $("#waiting").remove();
 
     // bind submission box
     $("#submission input").keydown(function( event ) {
       if (event.which == 13) {
+        document.message_sent = false;
         var curr_emotion = has_emotions($(this).val());
         if(curr_emotion){
-          fb_instance_stream.push({m:username+": " +$(this).val(), v:cur_video_blob, c: my_color, emotion:curr_emotion});
+          document.noVideo = true;
+          document.record(curr_emotion);
+          var message = $(this).val();
+          document.sendMessage = function() {
+            if (! cur_video_blob || document.message_sent)
+              return; 
+            fb_instance_stream.push({m:username+": " +message, v:cur_video_blob, c: my_color, emotion:curr_emotion});
+            document.message_sent = true;
+          }
         }else{
           fb_instance_stream.push({m:username+": " +$(this).val(), c: my_color});
         }
@@ -64,7 +74,9 @@
     scroll_to_bottom(1300);
   }
 
-  
+  function send_message() {
+
+  }
 
 
   function lol_call_back(wrapper) {
@@ -75,13 +87,19 @@
   }
   // creates a message node and appends it to the conversation
   function display_msg(data){
-    $("#conversation").append("<div class='msg' style='color:"+data.c+"'>"+data.m+ "</div>");
+    var username_from_msg = data.m.substr(0, data.m.indexOf(":"));
+    var from_me = false;
+    if (username_from_msg == document.username)
+      from_me = true;
+    var style_str = from_me ? "style='float:right'" : ""
+    var class_to_add = from_me ? " my_msg" : "";
+    $("#conversation").append("<div class='msg_wrapper_wrapper " + class_to_add + "'><div class='msg_wrapper'" + style_str + "><div class='msg' style='color:"+data.c+"'><p>"+data.m+ "</p></div></div></div>");
     if(data.v){
       // for video element
       var video = document.createElement("video");
-      video.autoplay = true;
+      video.autoplay = false;
       video.controls = false; // optional
-      video.loop = true;
+      video.loop = false;
       video.width = 120;
       var animation_callback = undefined;
       
@@ -96,21 +114,17 @@
       // video.src = URL.createObjectURL(base64_to_blob(data.v));
       
 
-      // var wrapper = document.createElement("div");
-      // wrapper.className = wrapper.className + " video_wrapper";
-      // //wrapper.className = wrapper.className + " animate"; 
-      // //wrapper.setAttribute("id", "video");
-      // document.getElementById("conversation").appendChild(wrapper);
-      // wrapper.appendChild(video);
-      // var wrapper = $.create("div");
-      $("#conversation").append("<div class=\"video_wrapper\"></div>");
+     
+      $(".msg_wrapper").last().append("<div class=\"video_wrapper\"></div>");
       var wrapper = $(".video_wrapper").last();
+      wrapper.append("<div class=\"video_overlay\"><p>CLICK TO PLAY</p></div>");
       wrapper.append(video);
 
 
       switch (data.emotion) {
         case "lol":
           wrapper.click(function() {
+            $(this).find("video")[0].play();
             wrapper.attr("id", "lol_animation");
             setTimeout(function() {
               wrapper.attr("id", "");
@@ -120,6 +134,7 @@
           break;
         case ">:O":  
           wrapper.click(function () {
+            $(this).find("video")[0].play();
             wrapper.attr("id", "angry_animation");
             setTimeout(function() {
               wrapper.attr("id", "");
@@ -169,11 +184,11 @@
       webcam_stream.appendChild(video);
 
       // counter
-      var time = 0;
-      var second_counter = document.getElementById('second_counter');
-      var second_counter_update = setInterval(function(){
-        second_counter.innerHTML = time++;
-      },1000);
+      // var time = 0;
+      // var second_counter = document.getElementById('second_counter');
+      // var second_counter_update = setInterval(function(){
+      //   second_counter.innerHTML = time++;
+      // },1000);
 
       // now record stream in 5 seconds interval
       var video_container = document.getElementById('video_container');
@@ -185,7 +200,7 @@
       // make recorded media smaller to save some traffic (80 * 60 pixels, 3*24 frames)
       mediaRecorder.video_width = video_width/2;
       mediaRecorder.video_height = video_height/2;
-
+      
       mediaRecorder.ondataavailable = function (blob) {
           //console.log("new data available!");
           video_container.innerHTML = "";
@@ -193,12 +208,41 @@
           // convert data into base 64 blocks
           blob_to_base64(blob,function(b64_data){
             cur_video_blob = b64_data;
+            document.sendMessage();
+            
           });
       };
-      setInterval( function() {
-        mediaRecorder.stop();
+
+      document.record = function(emotion) {
+        $("#webcam_stream").append("<div id='vid_timer'><p> Recording video for "+emotion+" </br> <span id='vid_counter'>3</span></p></div>");
+        $("#webcam_stream video").css( {
+          'width' : '320px',
+          'height' : '240px'
+        });
+        $("#webcam_stream").css( {
+          'position' : 'absolute',
+          'top' : '10%',
+          'left' : '50%',
+          'margin-left' : '-160px'
+        })
         mediaRecorder.start(3000);
-      }, 3000 );
+        var second_counter = setInterval(function () {
+          $('#vid_counter').text($('#vid_counter').text() - 1);
+        }, 1000);
+        setTimeout(function() {
+          mediaRecorder.stop();
+          $("#webcam_stream").removeAttr('style');
+          $("#webcam_stream video").removeAttr('style');
+          $("#vid_timer").remove();
+          clearInterval(second_counter);
+
+        }, 3000);
+        
+      }
+      // setInterval( function() {
+      //   mediaRecorder.stop();
+      //   mediaRecorder.start(3000);
+      // }, 3000 );
       console.log("connect to media stream!");
     }
 

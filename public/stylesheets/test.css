@@ -76,7 +76,75 @@
 		left: 25%;
 	}
 }
+.video_wrapper {
+	position: relative;
+}
+.video_wrapper .video_overlay {
+	position: absolute;
+	z-index: 2000;
+	top: 0px;
+	left: 0px;
+	width: 120px;
+	height: 90px;
+	color: white;
+	background-color: rgba(100,100,100,.5);
+	
+}
 
+
+.my_msg .msg_wrapper{
+	float: right;
+}
+
+.my_msg .msg_wrapper .video_wrapper video {
+	float: right;
+}
+
+.my_msg .msg_wrapper .video_wrapper .video_overlay {
+	left: auto;
+	right: 0px;
+}
+
+
+body #webcam_stream {
+	right: 30%;
+}
+#vid_timer {
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 240px;
+	width: 322px;
+	color:white;
+	text-align: center;
+}
+#vid_timer p {
+	margin-top: 60%;
+	background-color: rgba(175,175,175,.7);
+}
+#vid_counter {
+	font-size: 20pt;
+	font-weight: bold;
+}
+.video_wrapper p {
+	vertical-align: middle;
+	margin: 25% 0;
+	text-align: center;
+
+}
+
+#angry_animation .video_overlay, #lol_animation .video_overlay {
+	display:none;
+}
+.msg p {
+	margin: 0;
+}
+.msg_wrapper_wrapper {
+	overflow: auto;
+}
+.msg_wrapper {
+	/*overflow: auto;*/
+}
 #angry_animation video {
 	position: absolute;
 	top: 25%;

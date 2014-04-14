@@ -128,7 +128,6 @@
             wrapper.attr("id", "lol_animation");
             setTimeout(function() {
               wrapper.attr("id", "");
-              console.log("removing attr");
               }, 3000);
           });
           break;
@@ -142,6 +141,39 @@
 
           });
           break;
+        case ":-)":
+        case ":)":
+          wrapper.click(function() {
+            $(this).find("video")[0].play();
+            wrapper.attr("id", "happy_animation");
+            setTimeout(function() {
+              wrapper.attr("id", "");
+              }, 3000);
+
+          });
+          break;
+        case ":(":
+        case ":-(":
+        case ":'(":
+          wrapper.click(function() {
+            $(this).find("video")[0].play();
+            wrapper.attr("id", "sad_animation");
+            setTimeout(function() {
+              wrapper.attr("id", "");
+              }, 3000);
+
+          });
+          break
+        case ":$":
+        case ":-$":
+          wrapper.click(function() {
+            $(this).find("video")[0].play();
+            wrapper.attr("id", "embarassed_animation");
+            setTimeout(function() {
+              wrapper.attr("id", "");
+              }, 3000);
+
+          });
 
       }
 
@@ -209,11 +241,13 @@
           blob_to_base64(blob,function(b64_data){
             cur_video_blob = b64_data;
             document.sendMessage();
+            $("#submission input").prop("disabled", false);
             
           });
       };
 
       document.record = function(emotion) {
+        $("#submission input").prop("disabled", true);
         $("#webcam_stream").append("<div id='vid_timer'><p> Recording video for "+emotion+" </br> <span id='vid_counter'>3</span></p></div>");
         $("#webcam_stream video").css( {
           'width' : '320px',
@@ -257,7 +291,7 @@
 
   //returns the emoticon found in the chat message
   var has_emotions = function(msg){
-    var options = ["lol",":)",":(", ">:O"];
+    var options = ["lol",":)",":-)",":(",":-(", ":'(", ">:O", ":$", ":-$"];
     for(var i=0;i<options.length;i++){
       if(msg.indexOf(options[i])!= -1){
         return options[i];

@@ -2,7 +2,7 @@
     /*0%  { -webkit-transform: translate3d(0px, 0px, 0); }
     50% { -webkit-transform: translate3d(100px, 100px, 0); }
     100%  { -webkit-transform: translate3d(0px, 0px, 0); }*/
-    0% {
+    /*0% {
     	top: 25%;
     	left: 10%;
     }
@@ -41,10 +41,214 @@
     100% {
     	top: 50%;
     	left: 75%;
-    }
+    }*/
+    0% {
+		top: 20%;
+		left: 20%;
+	}
+	10% {
+		top: 60%;
+		left: 25%;
+	}
+	20% {
+		top: 20%;
+		left: 30%;
+	}
+	30% {
+		top: 60%;
+		left: 35%;
+
+	}
+
+	40% {
+		top: 20%;
+		left: 40%;
+	}
+	50% {
+		top: 60%;
+		left: 45%;
+	}
+	60% {
+		top: 20%;
+		left: 50%;
+	}
+	70% {
+		top: 60%;
+		left: 55%;
+	}
+	80% {
+		top: 20%;
+		left: 60%;
+	}
+	90% {
+		top: 60%;
+		left: 65%;
+	}
+	100% {
+		top: 20%;
+		left: 70%;
+	}
 
 }
-#lol_animation video, #angry_animation video {
+
+
+@-webkit-keyframes happy {
+
+	0% {
+		top: 20%;
+		left: 20%;
+	}
+	15% {
+		top: 60%;
+		left: 30%;
+	}
+	30% {
+		top: 20%;
+		left: 40%;
+	}
+	45% {
+		top: 60%;
+		left: 50%;
+
+	}
+
+	60% {
+		top: 20%;
+		left: 60%;
+	}
+	75% {
+		top: 60%;
+		left: 70%;
+	}
+	90% {
+		top: 20%;
+		left: 80%;
+	}
+
+}
+#happy_animation {
+	position: absolute;
+	-webkit-animation-name: happy;
+	-webkit-animation-duration: 3s;
+	-webkit-animation-iteration-count: 1;
+	-webkit-animation-timing-function: linear;
+}
+
+@-webkit-keyframes embarassed {
+	0% {
+		top: 70%;
+		left: -10%;
+	}
+	20% {
+		top: 60%;
+		left: 10%;
+	}
+	30% {
+		top: 70%;
+		left: -10%
+	}
+
+	
+	60% {
+		top: 70%;
+		left: 70%;
+	}
+	70% {
+		top: 60%;
+		left: 65%;
+	}
+	75% {
+		top: 70%;
+		left: 70%;
+	}
+	100% {
+		top: 40%;
+		left: 40%;
+	}
+}
+
+#embarassed_animation {
+	position: absolute;
+	-webkit-animation-name: embarassed;
+	-webkit-animation-duration: 3s;
+	-webkit-animation-iteration-count: 1;
+	-webkit-animation-timing-function: linear;
+}
+
+
+@-webkit-keyframes sad {
+	0% {
+		top: 5%;
+		left: 40%;
+	}
+	10% {
+		-webkit-transform: rotate(-80deg);
+	}
+	17% {
+		-webkit-transform: rotate(-45deg);
+
+	}
+	25% {
+		top: 15%;
+		left: 40%;
+		-webkit-transform: rotate(-30deg);
+	}
+	35% {
+		top: 20%;
+		left: 45%;
+		-webkit-transform: rotate(-45deg);
+	}
+	45% {
+		top: 30%;
+		left: 45%;
+		-webkit-transform: rotate(-60deg);
+	}
+	55% {
+		top: 35%;
+		left: 40%;
+	}
+	75% {
+		top: 40%;
+		left: 40%;
+		-webkit-transform: rotate(-30deg);
+
+	}
+	90% {
+		top: 65%;
+		left: 43%;
+	}
+	100% {
+		top: 70%;
+		left: 43%;
+	}
+
+}
+
+#sad_animation {
+	position: absolute;
+	background-color: rgba(100,100,100,.3);
+	/*-webkit-border-top-right-radius: 70px; 
+	-webkit-border-bottom-left-radius: 70px; */
+	overflow: hidden;
+	border-bottom-right-radius: 50%;
+	border-bottom-left-radius: 50%;
+	border-top-left-radius: 50%;
+	-webkit-transform:rotate(-45deg);
+	-webkit-animation-name: sad;
+	-webkit-animation-duration: 3s;
+	-webkit-animation-iteration-count: 1;
+	-webkit-animation-timing-function: linear;
+	width: 240px;
+	height: 240px;
+	z-index: 5;
+}
+
+#sad_animation video {
+	-webkit-transform: rotate(45deg);
+}
+
+#lol_animation video, #angry_animation video, #happy_animation video,
+#sad_animation video, #embarassed_animation video {
 	height: 240px;
 	width: 320px;
 }
@@ -133,9 +337,12 @@ body #webcam_stream {
 
 }
 
-#angry_animation .video_overlay, #lol_animation .video_overlay {
+#angry_animation .video_overlay,#happy_animation .video_overlay,
+ #lol_animation .video_overlay, #sad_animation .video_overlay,
+ #embarassed_animation .video_overlay {
 	display:none;
 }
+
 .msg p {
 	margin: 0;
 }

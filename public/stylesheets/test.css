@@ -272,13 +272,29 @@
 		width: 320px;
 		top: 25%;
 		left: 25%;
+		
 	}
 	50% {
 		height: 360px;
 		width: 480px;
 		top: 25%;
 		left: 25%;
+		
 	}
+}
+#angry_animation {
+	position: absolute;
+	top: 25%;
+	left: 25%;
+}
+#angry_animation video {
+	position: absolute;
+	
+	-webkit-animation-name: angry;
+	-webkit-animation-duration: 0.5s;
+	-webkit-animation-iteration-count: 6;
+	-webkit-animation-timing-function: linear;
+
 }
 .video_wrapper {
 	position: relative;
@@ -337,7 +353,7 @@ body #webcam_stream {
 
 }
 
-#angry_animation .video_overlay,#happy_animation .video_overlay,
+#angry_animation .video_overlay ,#happy_animation .video_overlay,
  #lol_animation .video_overlay, #sad_animation .video_overlay,
  #embarassed_animation .video_overlay {
 	display:none;
@@ -352,13 +368,4 @@ body #webcam_stream {
 .msg_wrapper {
 	/*overflow: auto;*/
 }
-#angry_animation video {
-	position: absolute;
-	top: 25%;
-	left: 25%;
-	-webkit-animation-name: angry;
-	-webkit-animation-duration: 0.5s;
-	-webkit-animation-iteration-count: 6;
-	-webkit-animation-timing-function: ease-in;
 
-}

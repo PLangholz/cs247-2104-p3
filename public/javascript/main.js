@@ -64,10 +64,15 @@
     scroll_to_bottom(1300);
   }
 
-  var lol_call_back = function(video_element) {
+  
 
+
+  function lol_call_back(wrapper) {
+    wrapper.setAttribute("id", "lol_animation");
+    setInterval(function() {
+      wrapper.setAttribute("id", "");
+    }, 3000);
   }
-
   // creates a message node and appends it to the conversation
   function display_msg(data){
     $("#conversation").append("<div class='msg' style='color:"+data.c+"'>"+data.m+ "</div>");
@@ -89,11 +94,43 @@
       // for gif instead, use this code below and change mediaRecorder.mimeType in onMediaSuccess below
       // var video = document.createElement("img");
       // video.src = URL.createObjectURL(base64_to_blob(data.v));
-      var wrapper = document.createElement("div");
-      //wrapper.className = wrapper.className + " animate"; 
-      wrapper.setAttribute("id", "video");
-      document.getElementById("conversation").appendChild(wrapper);
-      wrapper.appendChild(video);
+      
+
+      // var wrapper = document.createElement("div");
+      // wrapper.className = wrapper.className + " video_wrapper";
+      // //wrapper.className = wrapper.className + " animate"; 
+      // //wrapper.setAttribute("id", "video");
+      // document.getElementById("conversation").appendChild(wrapper);
+      // wrapper.appendChild(video);
+      // var wrapper = $.create("div");
+      $("#conversation").append("<div class=\"video_wrapper\"></div>");
+      var wrapper = $(".video_wrapper").last();
+      wrapper.append(video);
+
+
+      switch (data.emotion) {
+        case "lol":
+          wrapper.click(function() {
+            wrapper.attr("id", "lol_animation");
+            setTimeout(function() {
+              wrapper.attr("id", "");
+              console.log("removing attr");
+              }, 3000);
+          });
+          break;
+        case ">:O":  
+          wrapper.click(function () {
+            wrapper.attr("id", "angry_animation");
+            setTimeout(function() {
+              wrapper.attr("id", "");
+              }, 3000);
+
+          });
+          break;
+
+      }
+
+
       //document.getElementsByClassName("animate").last.appendChild(video);
       
     }
@@ -174,9 +211,9 @@
     navigator.getUserMedia(mediaConstraints, onMediaSuccess, onMediaError);
   }
 
-  // check to see if a message qualifies to be replaced with video.
+  //returns the emoticon found in the chat message
   var has_emotions = function(msg){
-    var options = ["lol",":)",":("];
+    var options = ["lol",":)",":(", ">:O"];
     for(var i=0;i<options.length;i++){
       if(msg.indexOf(options[i])!= -1){
         return options[i];

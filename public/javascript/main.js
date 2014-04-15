@@ -22,8 +22,9 @@
     }else{
       fb_chat_room_id = Math.random().toString(36).substring(7);
     }
-    display_msg({m:"Share this url with your friend to join this chat: "+ document.location.origin+"/#"+fb_chat_room_id,c:"red"})
-
+    display_msg({m:"Share this url with your friend to join this chat: "+ document.location.origin+"/#"+fb_chat_room_id,c:"red"});
+    display_msg({m:"When sending emoticons, type them in your message. </br> Once you hit enter you will begin recording a 3 second video to send as the emoticon", c:"red"});
+    display_msg({m:"Excepted emoticons are : lol,:),:-),:(,:-(, :'(, >:O,", c:"red"});
     // set up variables to access firebase data structure
     var fb_new_chat_room = fb_instance.child('chatrooms').child(fb_chat_room_id);
     var fb_instance_users = fb_new_chat_room.child('users');
@@ -164,16 +165,16 @@
 
           });
           break
-        case ":$":
-        case ":-$":
-          wrapper.click(function() {
-            $(this).find("video")[0].play();
-            wrapper.attr("id", "embarassed_animation");
-            setTimeout(function() {
-              wrapper.attr("id", "");
-              }, 3000);
+        // case ":$":
+        // case ":-$":
+        //   wrapper.click(function() {
+        //     $(this).find("video")[0].play();
+        //     wrapper.attr("id", "embarassed_animation");
+        //     setTimeout(function() {
+        //       wrapper.attr("id", "");
+        //       }, 3000);
 
-          });
+        //   });
 
       }
 
